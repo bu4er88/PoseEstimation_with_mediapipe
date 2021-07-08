@@ -8,8 +8,7 @@ mpHands = mp.solutions.hands
 hands = mpHands.Hands()
 mpDraw = mp.solutions.drawing_utils
 
-start_time = 0
-current_time = 0
+start_time = current_time = 0
 
 while True:
     success, img = capture.read()

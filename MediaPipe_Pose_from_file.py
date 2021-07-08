@@ -10,7 +10,9 @@ start_time = current_time = 0
 
 
 # For webcam input:
-cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("c:/TASK 1 - POSE ESTIMATION/GolfDB_SwingNet/videos_160/1.mp4")
+
 with mp_pose.Pose(
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5) as pose:
@@ -26,7 +28,7 @@ with mp_pose.Pose(
     image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
     # To improve performance, optionally mark the image as not writeable to
     # pass by reference.
-    #image.flags.writeable = False
+    image.flags.writeable = False
     results = pose.process(image)
 
     # Draw the pose annotation on the image.
@@ -67,11 +69,13 @@ with mp_pose.Pose(
       (ax*bx + ay*by) / (math.sqrt(ax**2 + ay**2) * math.sqrt(bx**2 + by**2))
     )
 
-    cv2.putText(image, str(alpha), (10, 50), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 1)
+    cv2.putText(image, str(alpha), (10, 50), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
     # cv2.putText(image, "x:{}, y:{}, z:{}".format(dots[15].x, dots[15].y, dots[15].z), (10, 50), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 1)
     # # print(landmarks[14])
 
     cv2.imshow('MediaPipe Pose', image)
-    if cv2.waitKey(5) & 0xFF == 27:
-      break
+    # if cv2.waitKey(1) & 0xFF == ord('q'):
+    #     break
+cv2.destroyAllWindows()
+
 cap.release()
