@@ -57,17 +57,16 @@ with mp_pose.Pose(
     x3 = dots[16].x
     y3 = dots[16].y
     z3 = dots[16].z
-    ax = x1 - x2
-    ay = y1 - y2
-    az = z1 - z2
-    bx = x3 - x2
-    by = y3 - y2
-    bz = z3 - z2
-    alpha = math.acos(
-      (ax*bx + ay*by) / (math.sqrt(ax**2 + ay**2) * math.sqrt(bx**2 + by**2))
+    cos_alpha = (
+      (x1*x3 + y1*y3) / (math.sqrt(x1**2 + y1**2) * math.sqrt(x3**2 + y3**2))
+    )
+    arccos_alpha = math.acos(
+            (x1 * x3 + y1 * y3) / (math.sqrt(x1 ** 2 + y1 ** 2) * math.sqrt(x3 ** 2 + y3 ** 2))
     )
 
-    cv2.putText(image, str(alpha), (10, 50), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 1)
+    cv2.putText(image, str(cos_alpha), (10, 50), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 1)
+    cv2.putText(image, str(arccos_alpha), (10, 70), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 1)
+
     # cv2.putText(image, "x:{}, y:{}, z:{}".format(dots[15].x, dots[15].y, dots[15].z), (10, 50), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 1)
     # # print(landmarks[14])
 
