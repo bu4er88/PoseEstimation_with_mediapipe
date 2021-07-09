@@ -50,28 +50,7 @@ with mp_pose.Pose(
     # print(dots[0])
     # # break
 
-    x1 = dots[12].x
-    y1 = dots[12].y
-    z1 = dots[12].z
-    x2 = dots[14].x
-    y2 = dots[14].y
-    z2 = dots[14].z
-    x3 = dots[16].x
-    y3 = dots[16].y
-    z3 = dots[16].z
-    ax = x1 - x2
-    ay = y1 - y2
-    az = z1 - z2
-    bx = x3 - x2
-    by = y3 - y2
-    bz = z3 - z2
-    alpha = math.acos(
-      (ax*bx + ay*by) / (math.sqrt(ax**2 + ay**2) * math.sqrt(bx**2 + by**2))
-    )
 
-    cv2.putText(image, str(alpha), (10, 50), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
-    # cv2.putText(image, "x:{}, y:{}, z:{}".format(dots[15].x, dots[15].y, dots[15].z), (10, 50), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0), 1)
-    # # print(landmarks[14])
 
     cv2.imshow('MediaPipe Pose', image)
     # if cv2.waitKey(1) & 0xFF == ord('q'):
