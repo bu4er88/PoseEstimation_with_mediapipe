@@ -2,6 +2,7 @@ import time
 import cv2
 import mediapipe as mp
 import numpy as np
+import pyautogui
 
 
 def calculate_angle(a, b, c):
@@ -36,9 +37,13 @@ start_time = current_time = 0
 
 # Webcam input:
 cap = cv2.VideoCapture(0)
+
 # Local disk movie input
 # cap = cv2.VideoCapture('c:/TASK 1 - POSE ESTIMATION/GolfDB_SwingNet/videos_160/1063.mp4')
+
 # Local disk image input
+# cap = cv2.VideoCapture('c:/TASK 1 - POSE ESTIMATION/1.jpg')
+
 
 # Getting cam resolution
 W = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
@@ -46,13 +51,24 @@ H = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 print(f'Input resolution: {H}x{W}')
 
 
+#######################################
+codec = cv2.VideoWriter_fourcc(*'XVID')
+out = cv2.VideoWriter('test.avi', codec, 24, (640, 480))
+cv2.namedWindow('Recording', cv2.WINDOW_NORMAL)
+cv2.resizeWindow('Recording', 640, 480)
+######################################
+
+
 with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
    while cap.isOpened():
         success, image = cap.read()
         if not success:
+
             print("Ignoring empty camera frame.")
             # If loading a video, use 'break' instead of 'continue'.
             continue
+
+        # img = pyautogui.screenshot()
 
         # Flip the image horizontally for a later selfie-view display, and convert
         # the BGR image to RGB.
@@ -147,8 +163,13 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                                   mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2, circle_radius=2)
                                   )
 
+
+        out.write(image)
+
         # Display cam capturing itself
-        cv2.imshow('MediaPipe Pose', image)
+        cv2.imshow(image)
+
+
         if cv2.waitKey(5) & 0xFF == 27:
             break
 

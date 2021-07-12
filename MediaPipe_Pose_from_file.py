@@ -53,8 +53,8 @@ with mp_pose.Pose(
 
 
     cv2.imshow('MediaPipe Pose', image)
-    # if cv2.waitKey(1) & 0xFF == ord('q'):
-    #     break
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 cv2.destroyAllWindows()
 
 cap.release()
