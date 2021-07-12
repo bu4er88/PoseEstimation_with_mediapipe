@@ -73,8 +73,6 @@ while cap.isOpened():
     # Draw the pose annotation on the image.
     image.flags.writeable = False
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    # mp_drawing.draw_landmarks(
-    #     image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
 
     # Display fps
     current_time = time.time()
