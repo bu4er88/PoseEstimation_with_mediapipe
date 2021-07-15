@@ -23,7 +23,7 @@ def visualize_angle(image, joint_point, cam_resolution):
     to_show = cv2.putText(image,
                           str(int(angle)),
                           tuple(np.multiply(joint_point, cam_resolution).astype(int)),
-                          cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 1
+                          cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 0), 1
                           )
     return to_show
 
@@ -34,10 +34,10 @@ mp_pose = mp.solutions.pose
 start_time = current_time = 0
 
 # Webcam input:
-cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture(0)
 # Local disk movie input
-# cap = cv2.VideoCapture('c:/TASK 1 - POSE ESTIMATION/GolfDB_SwingNet/videos_160/1063.mp4')
-# Local disk image input
+cap = cv2.VideoCapture("C:/TASK 1 - POSE ESTIMATION/swing_slowmotion_video.mp4")
+
 
 # Getting cam resolution
 W = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
@@ -58,27 +58,30 @@ pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 while cap.isOpened():
     success, image = cap.read()
     if not success:
-        print("Ignoring empty camera frame.")
+        print("Movie ended")
         # If loading a video, use 'break' instead of 'continue'.
-        continue
+        break
 
     # Flip the image horizontally for a later selfie-view display, and convert
     # the BGR image to RGB.
-    image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
+    # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # cv2.flip(image, 1)
     # To improve performance, optionally mark the image as not writeable to
     # pass by reference.
+
     image.flags.writeable = False
     results = pose.process(image)
 
+
+
     # Draw the pose annotation on the image.
     image.flags.writeable = False
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+
 
     # Display fps
     current_time = time.time()
     fps = 1 / (current_time - start_time)
     start_time = current_time
-    cv2.putText(image, 'fps: ' + str(int(fps)), (5, 30), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 1)
+    cv2.putText(image, 'fps: ' + str(int(fps)), (5, 15), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 255), 1)
 
     # Extracting and displaying angles of different parts of the body
     try:
@@ -131,23 +134,6 @@ while cap.isOpened():
         angle = calculate_angle(a, b, c)
         # Visualize angle
         visualize_angle(image, b, cam_resolution=[W, H])
-
-        # The angle between left wrist and left hip in left shoulder joint
-        # # ???????
-        # # ???????  doesn't work!!! (((
-        # # ???????
-        # a = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,
-        #      landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
-        # b = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,
-        #      landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
-        # c = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x,
-        #      landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
-        # # Calculate angle
-        # angle = calculate_angle(a, b, c)
-        # # Visualize angle
-        # visualize_angle(image, b, cam_resolution=[W, H])
-
-
     except:
         pass
 
@@ -157,13 +143,21 @@ while cap.isOpened():
                               mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2, circle_radius=2)
                               )
 
-    out.write(image)
+
+
+
+    # image = cv2.Canny(image, 250, 250)                      # Canny
+    # image = cv2.Laplacian(image, cv2.CV_64F)                # Laplacian
+    # image = cv2.Sobel(image, cv2.CV_64F, 1, 1, ksize=3)     # Sobel
 
 
     # Display cam capturing itself
     cv2.imshow('MediaPipe Pose', image)
+    out.write(image)
 
     if cv2.waitKey(5) & 0xFF == 27:
         break
 
+out.release()
 cap.release()
+cv2.destroyAllWindows()
