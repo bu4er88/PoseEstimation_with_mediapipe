@@ -145,8 +145,8 @@ while cap.isOpened():
 
 
     # image = cv2.Canny(image, 250, 250)                      # Canny
-    # image = cv2.Laplacian(image, cv2.CV_64F)                # Laplacian
-    # image = cv2.Sobel(image, cv2.CV_64F, 1, 1, ksize=3)     # Sobel
+    image = cv2.Laplacian(image, cv2.CV_64F)                # Laplacian
+    # image = cv2.Sobel(image, cv2.CV_64F, 2, 2, ksize=5)     # Sobel
 
 
     # Display cam capturing itself
