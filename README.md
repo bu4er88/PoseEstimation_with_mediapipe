@@ -1,2 +1,1 @@
-# Hand_landmarks_mediapipe
-Pipeline of hand landmarks with Mediapipe library
+Pose estimation and hand landmarks detection with Mediapipe library
